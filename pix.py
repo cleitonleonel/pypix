@@ -4,13 +4,17 @@ import qrcode
 from unicodedata import normalize
 
 
+def valid_number(phone_number):
+    return all([x.isdigit() for x in phone_number.split("-")])
+
+
 def right_pad(value):
     return f'0{value}' if value < 10 else value
 
 
 def formated_text(value):
     text = value.upper().replace('Ç', 'C')
-    return re.sub('[^A-Z0-9$%*+-/:]', '\n', normalize('NFD', text))
+    return re.sub(r'[^A-Z0-9$@%*+-\./:]', '\n', normalize('NFD', text))
 
 
 def crc_compute(hex_string):
@@ -82,8 +86,11 @@ class Pix(object):
             extra += 4 + len(description)
 
         if self.key:
+            if len(self.key) == 11:
+                if valid_number(self.key):
+                    self.key = f'+55{self.key}'
+
             content = formated_text(self.key)
-            print(content)
             lines.append(f'26{len(content) + extra}')
             lines.append('\t0014 br.gov.bcb.pix')
             lines.append(f'\t01{right_pad(len(content))} {content}')
