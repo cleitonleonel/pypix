@@ -15,7 +15,7 @@ def right_pad(value):
 
 def formated_text(value):
     text = value.upper().replace('Ç', 'C')
-    return re.sub(r'[^A-Z0-9$@%*+-\./:]', '\n', normalize('NFD', text))
+    return re.sub(r'[^A-Z0-9$@%*+-\./:]', '\n', normalize('NFD', text).encode('ASCII', 'ignore').decode('ASCII'))
 
 
 def crc_compute(hex_string):
