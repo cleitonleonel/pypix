@@ -1,8 +1,10 @@
+import base64
 import re
 import sys
 import crc16
 import qrcode
 from unicodedata import normalize
+from io import BytesIO
 
 
 def valid_number(phone_number):
@@ -163,6 +165,14 @@ class Pix(object):
             qr.make(fit=True)
             img = qr.make_image(fill='black', back_color='white')
             img.save(f'{output}')
-            return True
+            return self.base64_qrcode(img)
         except:
             return False
+
+    def base64_qrcode(self, img):
+        img_buffer = BytesIO()
+        img.save(img_buffer, 'png')
+        res = img_buffer.getvalue()
+        img_buffer.close()
+        data_string = base64.b64encode(res).decode()
+        return f'data:image/png;base64,{data_string}'
