@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
 Se essa lib te ajudou fique a vontade para fazer uma doação =), pode ser R$ 0.50 hahahaha. Para isso basta ler o qrcode abaixo, ele foi gerado com o arquivo de exemplo da lib.
 
-![QRCode Doação](https://github.com/cleitonleonel/pypix/blob/main/qrcode.png?raw=true)
+![QRCode Doação](https://github.com/cleitonleonel/pypix/blob/master/qrcode.png?raw=true)
 
 # Autor
 
