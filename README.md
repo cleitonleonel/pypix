@@ -1,6 +1,6 @@
 # _pypix_
 
-PYPIX é um biblioteca python que facilita a geração de br-codes dinâmicos e estáticos para o transações via PIX.
+PYPIX é um biblioteca python baseada no projeto GPIX de Hiago Silva Souza [(https://github.com/hiagodotme/gpix.git)] que facilita a geração de br-codes dinâmicos e estáticos para o transações via PIX.
 
 # Instalação
 
