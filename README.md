@@ -1,12 +1,11 @@
 # _pypix_
 
-PYPIX é um biblioteca python baseada no projeto GPIX de Hiago Silva Souza [(https://github.com/hiagodotme/gpix.git)] que facilita a geração de br-codes dinâmicos e estáticos para o transações via PIX.
-
-# Instalação
+PYPIX is a python library based on the GPIX project by Hiago Silva Souza [(https://github.com/hiagodotme/gpix.git)] that facilitates the generation of dynamic and static br-codes for transactions via PIX.
+# Installing the pypix library
 
 ```pip install git+https://github.com/cleitonleonel/pypix.git```
 
-# Como utilizar
+# How to use
 
 ```
 from pix import Pix
@@ -57,12 +56,12 @@ if __name__ == '__main__':
         print('erro ao salvar qr-code')
 ```
 
-# Essa lib te ajudou?
+# Did this lib help you?
 
-Se essa lib te ajudou fique a vontade para fazer uma doação =), pode ser R$ 0.50 hahahaha. Para isso basta ler o qrcode abaixo, ele foi gerado com o arquivo de exemplo da lib.
+If this lib lets you feel free to make a donation =), it can be R $ 0.50 hahahaha. To do so, just read the qrcode below, it was generated with the lib sample file.
 
 ![QRCode Doação](https://github.com/cleitonleonel/pypix/blob/master/qrcode.png?raw=true)
 
-# Autor
+# Author
 
 Cleiton Leonel Creton ==> cleiton.leonel@gmail.com
