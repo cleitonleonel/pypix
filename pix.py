@@ -50,7 +50,7 @@ class Pix(object):
 
     def set_name_receiver(self, name=None):
         if len(name) > 25:
-            print('A quantidade máxima de caracteres para o nome do recebedor é 25')
+            print('The maximum number of characters for the receiver name is 25')
             sys.exit()
 
         self.name_receiver = name
@@ -63,14 +63,14 @@ class Pix(object):
 
     def set_city_receiver(self, city=None):
         if len(city) > 15:
-            print('A quantidade máxima de caracteres para a cidade do recebedor é 15')
+            print('The maximum number of characters for the receiver city is 15.')
             sys.exit()
 
         self.city_receiver = city
 
     def set_value(self, value=None):
         if len(str("{0:.2f}".format(value))) > 13:
-            print('A quantidade máxima de caracteres para o valor é 13')
+            print('The maximum number of characters for the value is 13.')
             sys.exit()
 
         self.value = value
@@ -106,7 +106,7 @@ class Pix(object):
             lines.append('\f0014 br.gov.bcb.pix')
             lines.append(f'\t25{right_pad(len(default_url))} {default_url}')
         else:
-            print('É necessário informar uma URL ou então uma chave pix.')
+            print('You must enter a URL or a pix key.')
             sys.exit()
 
         if self.description:

@@ -7,7 +7,7 @@ PYPIX is a python library based on the GPIX project by Hiago Silva Souza [(https
 
 # How to use
 
-```
+```python
 from pix import Pix
 
 
