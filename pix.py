@@ -7,7 +7,31 @@ from unicodedata import normalize
 from io import BytesIO
 
 
-def valid_number(phone_number):
+def validate_cpf(numbers):
+    cpf = [int(char) for char in numbers if char.isdigit()]
+    if len(cpf) != 11:
+        return False
+    if cpf == cpf[::-1]:
+        return False
+    for i in range(9, 11):
+        value = sum((cpf[num] * ((i+1) - num) for num in range(0, i)))
+        digit = ((value * 10) % 11) % 10
+        if digit != cpf[i]:
+            print('Cpf is not valid !')
+            sys.exit()
+    return True
+
+
+def validate_phone(value):
+    rule = re.compile(r'\?\b([0-9]{2,3}|0((x|[0-9]){2,3}[0-9]{2}))\?\s*[0-9]{4,5}[- ]*[0-9]{4}\b')
+    if rule.search(value):
+        print('Phone is not valid !')
+        sys.exit()
+
+    return True
+
+
+def validate_number(phone_number):
     return all([x.isdigit() for x in phone_number.split("-")])
 
 
@@ -17,7 +41,7 @@ def right_pad(value):
 
 def formatted_text(value):
     text = value.upper().replace('Ç', 'C')
-    return re.sub(r'[^A-Z0-9$@%*+-/:]', '\n', normalize('NFD', text).encode('ASCII', 'ignore').decode('ASCII'))
+    return re.sub(r'[^A-Z0-9$@%*+-\./:]', '\n', normalize('NFD', text).encode('ASCII', 'ignore').decode('ASCII'))
 
 
 def crc_compute(hex_string):
@@ -93,7 +117,9 @@ class Pix(object):
 
         if self.key:
             if len(self.key) == 11:
-                if valid_number(self.key):
+                if validate_cpf(self.key):
+                    self.key = self.key
+                elif validate_phone(self.key):
                     self.key = f'+55{self.key}'
 
             content = formatted_text(self.key)
