@@ -15,9 +15,9 @@ def right_pad(value):
     return f'0{value}' if value < 10 else value
 
 
-def formated_text(value):
+def formatted_text(value):
     text = value.upper().replace('Ç', 'C')
-    return re.sub(r'[^A-Z0-9$@%*+-\./:]', '\n', normalize('NFD', text).encode('ASCII', 'ignore').decode('ASCII'))
+    return re.sub(r'[^A-Z0-9$@%*+-/:]', '\n', normalize('NFD', text).encode('ASCII', 'ignore').decode('ASCII'))
 
 
 def crc_compute(hex_string):
@@ -29,13 +29,13 @@ def crc_compute(hex_string):
 class Pix(object):
 
     def __init__(self):
-        self.single_transation = False
+        self.single_transaction = False
         self.key = ''
         self.name_receiver = ''
         self.city_receiver = ''
         self.value = 0
         self.zipcode_receiver = ''
-        self.identificator = ''
+        self.identification = ''
         self.description = ''
         self.default_url_pix = ''
 
@@ -55,8 +55,8 @@ class Pix(object):
 
         self.name_receiver = name
 
-    def set_identificator(self, identificator=None):
-        self.identificator = identificator
+    def set_identification(self, identification=None):
+        self.identification = identification
 
     def set_description(self, description=None):
         self.description = description
@@ -75,17 +75,17 @@ class Pix(object):
 
         self.value = value
 
-    def is_single_transation(self, single_transation=None):
-        self.single_transation = single_transation
+    def is_single_transaction(self, single_transaction=None):
+        self.single_transaction = single_transaction
 
     def get_br_code(self):
         lines = []
         lines.append('0002 01')
 
-        if self.single_transation:
+        if self.single_transaction:
             lines.append('0102 12')
 
-        description = formated_text(self.description or '')
+        description = formatted_text(self.description or '')
 
         extra = 14 + 8
         if description:
@@ -96,7 +96,7 @@ class Pix(object):
                 if valid_number(self.key):
                     self.key = f'+55{self.key}'
 
-            content = formated_text(self.key)
+            content = formatted_text(self.key)
             lines.append(f'26{len(content) + extra}')
             lines.append('\t0014 br.gov.bcb.pix')
             lines.append(f'\t01{right_pad(len(content))} {content}')
@@ -116,25 +116,25 @@ class Pix(object):
         lines.append('5303 986')
 
         if self.value:
-            value = formated_text(str(self.value))
+            value = formatted_text(str(self.value))
             if self.value > 0:
                 lines.append(f'54{right_pad(len(value))} {value}')
 
         lines.append('5802 BR')
-        name = formated_text(self.name_receiver)
+        name = formatted_text(self.name_receiver)
         lines.append(f'59{right_pad(len(name))} {name}')
 
-        city = formated_text(self.city_receiver)
+        city = formatted_text(self.city_receiver)
         lines.append(f'60{right_pad(len(city))} {city}')
 
         if self.zipcode_receiver:
-            zipcode = formated_text(self.zipcode_receiver)
+            zipcode = formatted_text(self.zipcode_receiver)
             lines.append(f'61{right_pad(len(zipcode))} {zipcode}')
 
-        if self.identificator:
-            identificator = formated_text(self.identificator)
-            lines.append(f'62{len(identificator) + 38}')
-            lines.append(f'\t05{right_pad(len(identificator))} {identificator}')
+        if self.identification:
+            identification = formatted_text(self.identification)
+            lines.append(f'62{len(identification) + 38}')
+            lines.append(f'\t05{right_pad(len(identification))} {identification}')
             lines.append('\t5030')
             lines.append('\t\t0017 br.gov.bcb.brcode')
             lines.append('\t\t0105 1.0.0')
@@ -166,7 +166,7 @@ class Pix(object):
             img = qr.make_image(fill='black', back_color='white')
             img.save(f'{output}')
             return self.base64_qrcode(img)
-        except:
+        except ValueError:
             return False
 
     def base64_qrcode(self, img):
