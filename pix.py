@@ -17,16 +17,15 @@ def validate_cpf(numbers):
         value = sum((cpf[num] * ((i+1) - num) for num in range(0, i)))
         digit = ((value * 10) % 11) % 10
         if digit != cpf[i]:
-            print('Cpf is not valid !')
-            sys.exit()
+            return False
+
     return True
 
 
 def validate_phone(value):
     rule = re.compile(r'\?\b([0-9]{2,3}|0((x|[0-9]){2,3}[0-9]{2}))\?\s*[0-9]{4,5}[- ]*[0-9]{4}\b')
     if rule.search(value):
-        print('Phone is not valid !')
-        sys.exit()
+        return False
 
     return True
 
