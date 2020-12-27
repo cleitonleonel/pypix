@@ -5,7 +5,7 @@ def normal_static():
     pix.set_name_receiver('Cleiton Leonel Creton')
     pix.set_city_receiver('Cariacica')
     pix.set_key('b5fe1edc-d108-410f-b966-eccaaca75e4f')
-    pix.set_identificator('123')
+    pix.set_identification('123')
     pix.set_zipcode_receiver('29148613')
     pix.set_description('Doação com valor fixo - PYPIX')
     pix.set_value(5.0)
@@ -22,7 +22,7 @@ def simple_static():
     print('Donation without defined amount - PYPIX >>>>\n', pix.get_br_code())
 
 
-def dinamic():
+def dynamic():
     pix.set_name_receiver('MasterSystem LTDA')
     pix.set_city_receiver('Cariacica')
     pix.set_default_url_pix('url-location-instituicao')
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     simple_static()
 
     # normal_static()
-    # dinamic()
+    # dynamic()
 
     base64qr = pix.save_qrcode('./qrcode.png')
 
