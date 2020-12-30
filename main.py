@@ -25,7 +25,8 @@ def simple_static():
 def dynamic():
     pix.set_name_receiver('MasterSystem LTDA')
     pix.set_city_receiver('Cariacica')
-    pix.set_default_url_pix('url-location-instituicao')
+    pix.set_default_url_pix('url-location-psp')
+    pix.set_value(10.5)
 
     print('\nBRCODE dinamic - PYPIX >>>>\n', pix.get_br_code())
 
