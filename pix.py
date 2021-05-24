@@ -175,7 +175,8 @@ class Pix(object):
 
         return result_string + crc_compute(result_string)
 
-    def get_qrcode(self):
+    @staticmethod
+    def get_qrcode():
         qr = qrcode.QRCode(
             version=1,
             box_size=2,
@@ -194,7 +195,8 @@ class Pix(object):
         except ValueError:
             return False
 
-    def base64_qrcode(self, img):
+    @staticmethod
+    def base64_qrcode(img):
         img_buffer = BytesIO()
         img.save(img_buffer, 'png')
         res = img_buffer.getvalue()

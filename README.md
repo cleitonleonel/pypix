@@ -62,7 +62,8 @@ if __name__ == '__main__':
 
 If this lib lets you feel free to make a donation =), it can be R $ 0.50 hahahaha. To do so, just read the qrcode below, it was generated with the lib sample file.
 
-![QRCode Doação](https://github.com/cleitonleonel/pypix/blob/master/qrcode.png?raw=true)
+<img src="https://github.com/cleitonleonel/pypix/blob/master/qrcode.png?raw=true" alt="QRCode Doação" width="250"/>
+
 
 # Author
 
