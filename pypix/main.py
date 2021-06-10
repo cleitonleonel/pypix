@@ -33,9 +33,9 @@ def dynamic():
 
 if __name__ == '__main__':
     pix = Pix()
-    simple_static()
+    #simple_static()
 
-    # normal_static()
+    normal_static()
     # dynamic()
 
     base64qr = pix.save_qrcode('./qrcode.png')
