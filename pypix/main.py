@@ -1,4 +1,4 @@
-from pix import Pix
+from .pix import Pix
 
 
 def normal_static():

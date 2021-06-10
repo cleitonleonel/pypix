@@ -1,1 +1,1 @@
-from pix import Pix  # noqa: F401
+from .pix import Pix  # noqa: F401
