@@ -18,7 +18,8 @@ setup(
     install_requires=[
         'Pillow',
         'qrcode',
-        'crc16'
+        'crc16',
+        'Pillow'
     ],
     project_urls={
         "Bug Tracker": "https://github.com/cleitonleonel/pypix/issues",
