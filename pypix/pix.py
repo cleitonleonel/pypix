@@ -3,6 +3,7 @@ import re
 import sys
 import crc16
 import qrcode
+from PIL import Image
 from unicodedata import normalize
 from io import BytesIO
 
@@ -14,7 +15,7 @@ def validate_cpf(numbers):
     if cpf == cpf[::-1]:
         return False
     for i in range(9, 11):
-        value = sum((cpf[num] * ((i+1) - num) for num in range(0, i)))
+        value = sum((cpf[num] * ((i + 1) - num) for num in range(0, i)))
         digit = ((value * 10) % 11) % 10
         if digit != cpf[i]:
             return False
@@ -61,6 +62,7 @@ class Pix(object):
         self.identification = ''
         self.description = ''
         self.default_url_pix = ''
+        self.qr = None
 
     def set_default_url_pix(self, default_url_pix=None):
         self.default_url_pix = default_url_pix.replace('https://', '')
@@ -176,21 +178,23 @@ class Pix(object):
         return result_string + crc_compute(result_string)
 
     @staticmethod
-    def get_qrcode():
+    def get_qrcode(version=1, size=2, border=5):
         qr = qrcode.QRCode(
-            version=1,
-            box_size=8,
-            border=5)
-
+            version=version,
+            box_size=size,
+            border=border)
         return qr
 
-    def save_qrcode(self, output='.'):
+    def save_qrcode(self, output='.', custom_logo=None, size=None):
+        size = 8 if custom_logo else size
         try:
-            qr = self.get_qrcode()
-            qr.add_data(self.get_br_code())
-            qr.make(fit=True)
-            img = qr.make_image(fill='black', back_color='white')
+            self.qr = self.get_qrcode(size=size)
+            self.qr.add_data(self.get_br_code())
+            self.qr.make(fit=True)
+            img = self.qr.make_image(fill='black', back_color='white').convert("RGB")
             img.save(f'{output}')
+            if custom_logo:
+                return self.qr_logo(custom_logo, qr_code=img)
             return self.base64_qrcode(img)
         except ValueError:
             return False
@@ -203,3 +207,18 @@ class Pix(object):
         img_buffer.close()
         data_string = base64.b64encode(res).decode()
         return f'data:image/png;base64,{data_string}'
+
+    def qr_ascii(self):
+        return self.qr.print_ascii()
+
+    @staticmethod
+    def qr_logo(logo, qr_code):
+        lg = Image.open(logo)
+        width = 100
+        wpercent = (width / float(lg.size[0]))
+        hsize = int((float(lg.size[1]) * float(wpercent)))
+        logo_qr = lg.resize((width, hsize), Image.ANTIALIAS)
+        pos = ((qr_code.size[0] - logo_qr.size[0]) // 2,
+               (qr_code.size[1] - logo_qr.size[1]) // 2)
+        qr_code.paste(logo_qr, pos)
+        return qr_code.save('custom_qr.png')

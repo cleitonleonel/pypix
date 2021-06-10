@@ -1,4 +1,4 @@
-from .pix import Pix
+from pypix.pix import Pix
 
 
 def normal_static():
@@ -38,7 +38,8 @@ if __name__ == '__main__':
     normal_static()
     # dynamic()
 
-    base64qr = pix.save_qrcode('./qrcode.png')
+    base64qr = pix.save_qrcode('./qrcode.png', custom_logo='/home/cleiton/PyJobs/ScriptsPython/qrcodes/g4g.jpg')
+    pix.qr_ascii()
 
     if base64qr:
         print('Success in saving static QR-code.')
