@@ -8,7 +8,7 @@ def normal_static():
     pix.set_identification('123')
     pix.set_zipcode_receiver('29148613')
     pix.set_description('Doação com valor fixo - PYPIX')
-    pix.set_value(5.0)
+    pix.set_amount(5.0)
 
     print('\nDonation with defined amount - PYPIX >>>>\n', pix.get_br_code())
 
@@ -26,7 +26,7 @@ def dynamic():
     pix.set_name_receiver('MasterSystem LTDA')
     pix.set_city_receiver('Cariacica')
     pix.set_default_url_pix('url-location-psp')
-    pix.set_value(10.5)
+    pix.set_amount(10.5)
 
     print('\nBRCODE dinamic - PYPIX >>>>\n', pix.get_br_code())
 

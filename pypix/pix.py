@@ -36,13 +36,14 @@ def validate_number(phone_number):
     return all([x.isdigit() for x in phone_number.split("-")])
 
 
-def right_pad(value):
-    return f'0{value}' if value < 10 else value
+def get_value(identify, value):
+    return f"{identify}{str(len(value)).zfill(2)}{value}"
 
 
 def formatted_text(value):
-    text = value.upper().replace('Ç', 'C')
-    return re.sub(r'[^A-Z0-9$@%*+-\./:]', '\n', normalize('NFD', text).encode('ASCII', 'ignore').decode('ASCII'))
+    return re.sub(r'[^A-a-Z-z\[\]0-9$@%*+-\./:_]', ' ',
+                  normalize('NFD', value).encode('ascii', 'ignore').decode('ascii')
+                  )
 
 
 def crc_compute(hex_string):
@@ -85,14 +86,14 @@ class Pix(object):
 
     def __init__(self):
         self.single_transaction = False
-        self.key = ''
-        self.name_receiver = ''
-        self.city_receiver = ''
-        self.value = 0
-        self.zipcode_receiver = ''
-        self.identification = ''
-        self.description = ''
-        self.default_url_pix = ''
+        self.key = None
+        self.name_receiver = None
+        self.city_receiver = None
+        self.amount = None
+        self.zipcode_receiver = None
+        self.identification = None
+        self.description = None
+        self.default_url_pix = None
         self.qr = None
 
     def set_default_url_pix(self, default_url_pix=None):
@@ -124,89 +125,57 @@ class Pix(object):
 
         self.city_receiver = city
 
-    def set_value(self, value=None):
+    def set_amount(self, value=None):
         if len(str("{0:.2f}".format(value))) > 13:
             print('The maximum number of characters for the value is 13.')
             sys.exit()
 
-        self.value = value
+        self.amount = "{0:.2f}".format(value)
 
     def is_single_transaction(self, single_transaction=None):
         self.single_transaction = single_transaction
 
     def get_br_code(self):
-        lines = []
-        lines.append('0002 01')
+        result_string = f"{get_value('00', '01')}" \
+                        f"{get_value('01', '12' if self.single_transaction else '11')}" \
+                        f"{self.get_account_information()}" \
+                        f"{get_value('52', '0000')}" \
+                        f"{get_value('53', '986')}" \
+                        f"{get_value('54', str(self.amount))}" \
+                        f"{get_value('58', 'BR')}" \
+                        f"{get_value('59', formatted_text(self.name_receiver))}" \
+                        f"{get_value('60', formatted_text(self.city_receiver))}" \
+                        f"{get_value('61', formatted_text(self.zipcode_receiver))}" \
+                        f"{self.get_additional_data_field()}" \
+                        f"6304"
 
-        if self.single_transaction:
-            lines.append('0102 12')
+        return result_string + crc_compute(result_string)
 
-        description = formatted_text(self.description or '')
-
-        extra = 14 + 8
-        if description:
-            extra += 4 + len(description)
-
+    def get_account_information(self):
+        base_pix = get_value('00', 'br.gov.bcb.pix')
+        info_string = ''
         if self.key:
             if len(self.key) == 11:
                 if validate_cpf(self.key):
                     self.key = self.key
                 elif validate_phone(self.key):
                     self.key = f'+55{self.key}'
-
-            content = formatted_text(self.key)
-            lines.append(f'26{len(content) + extra}')
-            lines.append('\t0014 br.gov.bcb.pix')
-            lines.append(f'\t01{right_pad(len(content))} {content}')
+            info_string += get_value('01', self.key)
         elif self.default_url_pix:
-            default_url = self.default_url_pix
-            lines.append(f'26{len(default_url) + extra}')
-            lines.append('\f0014 br.gov.bcb.pix')
-            lines.append(f'\t25{right_pad(len(default_url))} {default_url}')
+            info_string += get_value('25', self.default_url_pix)
         else:
             print('You must enter a URL or a pix key.')
             sys.exit()
-
         if self.description:
-            lines.append(f'\t02{right_pad(len(description))} {description}')
+            info_string += get_value('02', formatted_text(self.description))
 
-        lines.append('5204 0000')
-        lines.append('5303 986')
+        return get_value('26', f'{base_pix}{info_string}')
 
-        if self.value:
-            value = formatted_text(str(self.value))
-            if self.value > 0:
-                lines.append(f'54{right_pad(len(value))} {value}')
-
-        lines.append('5802 BR')
-        name = formatted_text(self.name_receiver)
-        lines.append(f'59{right_pad(len(name))} {name}')
-
-        city = formatted_text(self.city_receiver)
-        lines.append(f'60{right_pad(len(city))} {city}')
-
-        if self.zipcode_receiver:
-            zipcode = formatted_text(self.zipcode_receiver)
-            lines.append(f'61{right_pad(len(zipcode))} {zipcode}')
-
+    def get_additional_data_field(self):
         if self.identification:
-            identification = formatted_text(self.identification)
-            lines.append(f'62{len(identification) + 38}')
-            lines.append(f'\t05{right_pad(len(identification))} {identification}')
-            lines.append('\t5030')
-            lines.append('\t\t0017 br.gov.bcb.brcode')
-            lines.append('\t\t0105 1.0.0')
-
-        if self.default_url_pix:
-            lines.append('6207')
-            lines.append('\t0503 ***')
-
-        lines.append('6304')
-
-        lines = map(lambda item: item.replace(' ', ''), lines)
-        result_string = ''.join(lines).replace('\t', '').replace('\n', ' ')
-
-        return result_string + crc_compute(result_string)
+            return get_value('62', get_value('05', formatted_text(self.identification)))
+        else:
+            return get_value('62', get_value('05', '***'))
 
     def save_qrcode(self, output='./qrcode.png', color='black', custom_logo=None, **kwargs):
         try:
