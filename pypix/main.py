@@ -38,7 +38,8 @@ if __name__ == '__main__':
     normal_static()
     # dynamic()
 
-    base64qr = pix.save_qrcode('./qrcode.png', custom_logo='/home/cleiton/PyJobs/ScriptsPython/qrcodes/g4g.jpg')
+    base64qr = pix.save_qrcode('./qrcode.png', color="green", box_size=7,
+                               border=1, custom_logo='/home/cleiton/PyJobs/ScriptsPython/qrcodes/g4g.jpg')
     pix.qr_ascii()
 
     if base64qr:
