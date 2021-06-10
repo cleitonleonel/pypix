@@ -179,7 +179,7 @@ class Pix(object):
     def get_qrcode():
         qr = qrcode.QRCode(
             version=1,
-            box_size=2,
+            box_size=8,
             border=5)
 
         return qr
