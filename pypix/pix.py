@@ -89,7 +89,7 @@ class Pix(object):
         self.key = None
         self.name_receiver = None
         self.city_receiver = None
-        self.amount = None
+        self.amount = 0.0
         self.zipcode_receiver = None
         self.identification = None
         self.description = None
@@ -145,7 +145,7 @@ class Pix(object):
                         f"{get_value('58', 'BR')}" \
                         f"{get_value('59', formatted_text(self.name_receiver))}" \
                         f"{get_value('60', formatted_text(self.city_receiver))}" \
-                        f"{get_value('61', formatted_text(self.zipcode_receiver))}" \
+                        f"{get_value('61', formatted_text(self.zipcode_receiver)) if self.zipcode_receiver else ''}" \
                         f"{self.get_additional_data_field()}" \
                         f"6304"
 

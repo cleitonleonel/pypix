@@ -1,7 +1,7 @@
 from pypix.pix import Pix
 
 
-def normal_static():
+def normal_static():  # Testado e funcionando para Nubank, Inter, Caixa
     pix.set_name_receiver('Cleiton Leonel Creton')
     pix.set_city_receiver('Cariacica')
     pix.set_key('b5fe1edc-d108-410f-b966-eccaaca75e4f')
@@ -13,7 +13,7 @@ def normal_static():
     print('\nDonation with defined amount - PYPIX >>>>\n', pix.get_br_code())
 
 
-def simple_static():
+def simple_static():  # Banco Inter exige valores acima de 1 R$, Nubank e Caixa aceitam valores livres
     pix.set_name_receiver('Cleiton Leonel Creton')
     pix.set_city_receiver('Cariacica')
     pix.set_key('b5fe1edc-d108-410f-b966-eccaaca75e4f')
@@ -22,7 +22,7 @@ def simple_static():
     print('Donation without defined amount - PYPIX >>>>\n', pix.get_br_code())
 
 
-def dynamic():
+def dynamic():  # Não Testado
     pix.set_name_receiver('MasterSystem LTDA')
     pix.set_city_receiver('Cariacica')
     pix.set_default_url_pix('url-location-psp')
@@ -33,9 +33,9 @@ def dynamic():
 
 if __name__ == '__main__':
     pix = Pix()
-    #simple_static()
 
     normal_static()
+    # simple_static()
     # dynamic()
 
     base64qr = pix.save_qrcode('./qrcode.png', color="green", box_size=7,
