@@ -1,5 +1,7 @@
 # _pypix_
 
+<img src="https://github.com/cleitonleonel/pypix/blob/master/pypix.png?raw=true" alt="pypix" width="450"/>
+
 PYPIX is a python library based on the GPIX project by Hiago Silva Souza [(https://github.com/hiagodotme/gpix.git)] that facilitates the generation of dynamic and static br-codes for transactions via PIX.
 # Installing the pypix library
 
