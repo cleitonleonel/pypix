@@ -1,4 +1,7 @@
+amzqr==0.0.1
 crc16==0.1.1
+imageio==2.9.0
+numpy==1.20.3
 Pillow==8.0.1
 qrcode==6.1
 six==1.16.0

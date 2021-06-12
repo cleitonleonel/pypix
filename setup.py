@@ -6,7 +6,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="pypix",
-    version="0.0.2",
+    version="1.0.3",
     include_package_data=True,
     author="Cleiton Leonel Creton",
     author_email="cleiton.leonel@gmail.com",
@@ -19,7 +19,8 @@ setup(
         'Pillow',
         'qrcode',
         'crc16',
-        'Pillow'
+        'Pillow',
+        'amzqr'
     ],
     project_urls={
         "Bug Tracker": "https://github.com/cleitonleonel/pypix/issues",

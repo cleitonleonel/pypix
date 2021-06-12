@@ -5,6 +5,7 @@ import crc16
 import base64
 import qrcode
 from unicodedata import normalize
+from amzqr import amzqr
 from PIL import Image
 from io import BytesIO
 
@@ -189,6 +190,26 @@ class Pix(object):
             return base64_qrcode(img)
         except ValueError:
             return False
+
+    def get_qrcode_artistic(self, picture, version=None, colorized=True, output=None, fill=None):
+        try:
+            version, level, qr_name = amzqr.run(
+                self.get_br_code(),
+                version=version if version else 1,
+                level='H',
+                picture=picture,
+                colorized=colorized,
+                contrast=fill['contrast'] if fill else 1.0,
+                brightness=fill['brightness'] if fill else 1.0,
+                save_name=output if output else './artistic.gif',
+                save_dir=os.getcwd()
+            )
+            print(f"Success in saving artistic QR-code.")
+            print(version, level, qr_name)
+        except ValueError:
+            print('Error saving QR-code.')
+
+        sys.exit()
 
     def qr_ascii(self):
         return self.qr.print_ascii()

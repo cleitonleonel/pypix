@@ -33,17 +33,24 @@ def dynamic():  # Não Testado
 
 if __name__ == '__main__':
     pix = Pix()
-
     normal_static()
+
     # simple_static()
     # dynamic()
 
+    """Método para gerar qrcode, com ou sem logo"""
     base64qr = pix.save_qrcode('./qrcode.png', color="green", box_size=7,
-                               border=1, custom_logo='/home/cleiton/PyJobs/ScriptsPython/qrcodes/g4g.jpg')
-    pix.qr_ascii()
+                               border=1, custom_logo='/home/cleiton/PyJobs/ScriptsPython/qrcodes/g4g.jpg'
+                               )
+    pix.qr_ascii()  # Imprime qrcode no terminal
 
-    if base64qr:
+    if base64qr:  # Imprime qrcode em fomato base64
         print('Success in saving static QR-code.')
         print(base64qr)
     else:
         print('Error saving QR-code.')
+
+    """Método para gerar qrcode estilizado, colorido ou não e animado"""
+    pix.get_qrcode_artistic('./py.gif', version=3, output='./artistic.gif',
+                            fill={'contrast': 10.0, 'brightness': 1.0}
+                            )
