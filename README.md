@@ -76,6 +76,8 @@ If this lib lets you feel free to make a donation =), it can be R $ 0.50 hahahah
 <img src="https://github.com/cleitonleonel/pypix/blob/master/qrcode.png?raw=true" alt="QRCode Doação" width="250"/>
 
 
+<img src="https://github.com/cleitonleonel/pypix/blob/master/artistic.gif?raw=true" alt="QRCode Doação" width="250"/>
+
 # Author
 
 Cleiton Leonel Creton ==> cleiton.leonel@gmail.com
