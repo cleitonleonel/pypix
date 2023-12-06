@@ -1,13 +1,13 @@
 import re
 import os
 import sys
-import crc16
 import base64
 import qrcode
-from unicodedata import normalize
-from amzqr import amzqr
 from PIL import Image
+from amzqr import amzqr
 from io import BytesIO
+from binascii import crc_hqx
+from unicodedata import normalize
 
 
 def validate_cpf(numbers):
@@ -49,7 +49,7 @@ def formatted_text(value):
 
 def crc_compute(hex_string):
     msg = bytes(hex_string, 'utf-8')
-    crc = crc16.crc16xmodem(msg, 0xffff)
+    crc = crc_hqx(msg, 0xffff)
     return '{:04X}'.format(crc & 0xffff)
 
 
@@ -75,7 +75,7 @@ def qr_logo(logo, qr_code, out):
     width = 100
     wpercent = (width / float(lg.size[0]))
     hsize = int((float(lg.size[1]) * float(wpercent)))
-    logo_qr = lg.resize((width, hsize), Image.ANTIALIAS)
+    logo_qr = lg.resize((width, hsize), Image.Resampling.LANCZOS)
     pos = ((qr_code.size[0] - logo_qr.size[0]) // 2,
            (qr_code.size[1] - logo_qr.size[1]) // 2)
     qr_code.paste(logo_qr, pos)
