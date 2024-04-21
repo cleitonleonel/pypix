@@ -18,7 +18,6 @@ setup(
     install_requires=[
         'Pillow',
         'qrcode',
-        'Pillow',
         'amzqr'
     ],
     project_urls={
