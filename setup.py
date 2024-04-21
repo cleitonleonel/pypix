@@ -18,7 +18,6 @@ setup(
     install_requires=[
         'Pillow',
         'qrcode',
-        'crc16',
         'Pillow',
         'amzqr'
     ],
