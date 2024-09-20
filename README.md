@@ -5,7 +5,12 @@
 PYPIX is a python library based on the [GPIX](https://github.com/hiagodotme/gpix.git) project by Hiago Silva Souza that facilitates the generation of dynamic and static br-codes for transactions via PIX.
 # Installing the pypix library
 
-```pip install git+https://github.com/cleitonleonel/pypix.git```
+```shell
+pip install git+https://github.com/cleitonleonel/pypix.git
+cd pypix
+pip install poetry
+poetry install
+```
 
 # How to use
 
@@ -13,7 +18,7 @@ PYPIX is a python library based on the [GPIX](https://github.com/hiagodotme/gpix
 from pypix.pix import Pix
 
 
-def normal_static():  # Testado e funcionando para Nubank, Inter, Caixa
+def normal_static():  # Testado e funcionando para Nubank, Inter, Caixa, Mercadopago
     pix.set_name_receiver('Cleiton Leonel Creton')
     pix.set_city_receiver('Cariacica')
     pix.set_key('b5fe1edc-d108-410f-b966-eccaaca75e4f')
@@ -51,9 +56,19 @@ if __name__ == '__main__':
     # dynamic()
 
     """Método para gerar qrcode, com ou sem logo"""
-    base64qr = pix.save_qrcode('./qrcode.png', color="green", box_size=7,
-                               border=1, custom_logo='/home/cleiton/PyJobs/ScriptsPython/qrcodes/g4g.jpg'
-                               )
+
+    base64qr = pix.save_qrcode(
+        './qrcode.png',
+        color="black",
+        box_size=7,
+        border=1,
+        custom_logo={
+            "logo": "pix.png",
+            "border_radius": 25,
+            "shape": "oval",
+        }
+    )
+
     pix.qr_ascii()  # Imprime qrcode no terminal
 
     if base64qr:  # Imprime qrcode em fomato base64
@@ -63,9 +78,10 @@ if __name__ == '__main__':
         print('Error saving QR-code.')
 
     """Método para gerar qrcode estilizado, colorido ou não e animado"""
-    pix.get_qrcode_artistic('./py.gif', version=3, output='./artistic.gif',
-                            fill={'contrast': 10.0, 'brightness': 1.0}
-                            )
+    pix.get_qrcode_artistic(
+        './py.gif', version=3, output='./artistic.gif',
+        fill={'contrast': 10.0, 'brightness': 1.0}
+    )
 
 ```
 
