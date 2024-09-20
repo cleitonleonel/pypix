@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pypix"
+version = "0.1.0"
+description = "Biblioteca python para gerar br-code e qr-code do PIX."
+authors = ["cleiton <cleiton.leonel@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+qrcode = "^7.4.2"
+amzqr = "^0.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
