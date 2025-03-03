@@ -209,7 +209,7 @@ class Pix:
         if self.key:
             if len(self.key) == 11 and validate_cpf(self.key):
                 self.key = self.key
-            elif validate_phone(self.key):
+            elif validate_phone(self.key) and not self.key.startswith('+55'):
                 self.key = f'+55{self.key}'
             info_string += get_value('01', self.key)
         elif self.default_url_pix:
