@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 qrcode = "^7.4.2"
-amzqr = "^0.0.1"
+cairosvg = "^2.7.1"
 
 
 [build-system]

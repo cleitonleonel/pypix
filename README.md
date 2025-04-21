@@ -16,6 +16,9 @@ poetry install
 
 ```python
 from pypix.pix import Pix
+from pypix.core.styles.marker_styles import MarkerStyle
+from pypix.core.styles.border_styles import BorderStyle
+from pypix.core.styles.line_styles import LineStyle
 
 
 def normal_static():  # Testado e funcionando para Nubank, Inter, Caixa, Mercadopago
@@ -58,15 +61,13 @@ if __name__ == '__main__':
     """Método para gerar qrcode, com ou sem logo"""
 
     base64qr = pix.save_qrcode(
-        './qrcode.png',
-        color="black",
+        'qrcode.png',
         box_size=7,
         border=1,
-        custom_logo={
-            "logo": "pix.png",
-            "border_radius": 25,
-            "shape": "oval",
-        }
+        custom_logo="pix.png",
+        marker_style=MarkerStyle.CIRCLE,
+        border_style=BorderStyle.ROUNDED,
+        line_style=LineStyle.ROUNDED,
     )
 
     pix.qr_ascii()  # Imprime qrcode no terminal
@@ -76,13 +77,6 @@ if __name__ == '__main__':
         print(base64qr)
     else:
         print('Error saving QR-code.')
-
-    """Método para gerar qrcode estilizado, colorido ou não e animado"""
-    pix.get_qrcode_artistic(
-        './py.gif', version=3, output='./artistic.gif',
-        fill={'contrast': 10.0, 'brightness': 1.0}
-    )
-
 ```
 
 # Did this lib help you?

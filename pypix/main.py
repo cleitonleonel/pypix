@@ -1,10 +1,14 @@
 from pypix.pix import Pix
+from pypix.core.styles.marker_styles import MarkerStyle
+from pypix.core.styles.border_styles import BorderStyle
+from pypix.core.styles.line_styles import LineStyle
 
 
 def normal_static():  # Testado e funcionando para Nubank, Inter, Caixa
-    pix.set_name_receiver('Cleiton Leonel Creton')
+    pix.set_name_receiver('Teste')
     pix.set_city_receiver('Cariacica')
-    pix.set_key('b5fe1edc-d108-410f-b966-eccaaca75e4f')
+    # pix.set_key('b5fe1edc-d108-410f-b966-eccaaca75e4f')
+    pix.set_key('27995772291')
     pix.set_identification('PIXMP0001')
     pix.set_zipcode_receiver('29148613')
     pix.set_description('Doação Livre / QRCODE - PYPIX')
@@ -23,10 +27,9 @@ def simple_static():  # Banco Inter exige valores acima de 1 R$, Nubank e Caixa 
 
 
 def dynamic():  # Não Testado
-    pix.set_name_receiver('PAGSMILE')
-    pix.set_city_receiver('Belo Horizonte')
-    pix.set_default_url_pix('api-pix.bancobs2.com.br/spi/v2/a737c1c0-71c0-4939-9436-e03706047c74')
-    pix.set_amount(120)
+    pix.set_name_receiver('TESOURO NACIONAL')
+    pix.set_city_receiver('BRASILIA')
+    pix.set_default_url_pix('bitsorbyte.com.br/login')
     print('\nBRCODE dinamic - PYPIX >>>>\n', pix.get_br_code())
 
 
@@ -39,15 +42,13 @@ if __name__ == '__main__':
     # base64qr = pix.save_qrcode('./qrcode.png')
     """Método para gerar qrcode, com ou sem logo"""
     base64qr = pix.save_qrcode(
-        './qrcode.png',
-        color="black",
+        'qrcode.png',
         box_size=7,
         border=1,
-        custom_logo={
-            "logo": "pix.png",
-            "border_radius": 25,
-            "shape": "circle",
-        }
+        custom_logo="pix.png",
+        marker_style=MarkerStyle.CIRCLE,
+        border_style=BorderStyle.ROUNDED,
+        line_style=LineStyle.ROUNDED,
     )
     # pix.qr_ascii()  # Imprime qrcode no terminal
 
