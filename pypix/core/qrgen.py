@@ -2,10 +2,11 @@ import qrcode
 from qrcode.image.styledpil import StyledPilImage
 from PIL import Image
 from typing import Optional
-from .styles.marker_styles import MarkerStyle, MARKER_SVGS
-from .styles.border_styles import BorderStyle, BORDER_SVGS
-from .styles.line_styles import LineStyle, LINE_STYLES
-from .utils.image_utils import svg_to_pil, add_center_image
+from pypix.core.styles.qr_styler import QRCodeStyler, GradientMode
+from pypix.core.styles.marker_styles import MarkerStyle, MARKER_SVGS
+from pypix.core.styles.border_styles import BorderStyle, BORDER_SVGS
+from pypix.core.styles.line_styles import LineStyle, LINE_STYLES
+from pypix.core.utils.image_utils import svg_to_pil, add_center_image
 
 
 class Generator(qrcode.QRCode):
@@ -16,6 +17,7 @@ class Generator(qrcode.QRCode):
         self.box_size = None
         self.error_correction = None
         self.version = None
+        self.style_mode = None
 
     def create_custom_qr(
         self,
@@ -26,11 +28,15 @@ class Generator(qrcode.QRCode):
         marker_style: MarkerStyle = MarkerStyle.PLUS,
         border_style: BorderStyle = BorderStyle.CIRCLE,
         line_style: LineStyle = LineStyle.ROUNDED,
+        gradient_color: str = "blue",
+        gradient_mode: GradientMode = GradientMode.GRADIENT,
+        style_mode: str = 'Normal'
     ) -> Image.Image:
         self.version = 7
         self.error_correction = qrcode.constants.ERROR_CORRECT_H
         self.box_size = size
         self.border = border
+        self.style_mode = style_mode
 
         self.add_data(data)
         self.make(fit=True)
@@ -43,6 +49,12 @@ class Generator(qrcode.QRCode):
         )
         img = img.convert("RGBA")
 
+        img = QRCodeStyler.apply_gradient(
+            img,
+            color=gradient_color,
+            mode=gradient_mode
+        )
+
         border_img = svg_to_pil(BORDER_SVGS[border_style], size * 7)
         center_img = svg_to_pil(MARKER_SVGS[marker_style], size * 3)
 
@@ -53,6 +65,13 @@ class Generator(qrcode.QRCode):
             size,
             border
         )
+
+        if self.style_mode == "Full":
+            img = QRCodeStyler.apply_gradient(
+                img,
+                color=gradient_color,
+                mode=gradient_mode
+            )
 
         if center_image:
             add_center_image(img, center_image)

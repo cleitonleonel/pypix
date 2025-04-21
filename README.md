@@ -16,6 +16,7 @@ poetry install
 
 ```python
 from pypix.pix import Pix
+from pypix.core.styles.qr_styler import GradientMode
 from pypix.core.styles.marker_styles import MarkerStyle
 from pypix.core.styles.border_styles import BorderStyle
 from pypix.core.styles.line_styles import LineStyle
@@ -65,9 +66,12 @@ if __name__ == '__main__':
         box_size=7,
         border=1,
         custom_logo="pix.png",
-        marker_style=MarkerStyle.CIRCLE,
+        marker_style=MarkerStyle.QUARTER_CIRCLE,
         border_style=BorderStyle.ROUNDED,
         line_style=LineStyle.ROUNDED,
+        gradient_color="green",
+        gradient_mode=GradientMode.MULTI,
+        style_mode="Full"  # Normal
     )
 
     pix.qr_ascii()  # Imprime qrcode no terminal
