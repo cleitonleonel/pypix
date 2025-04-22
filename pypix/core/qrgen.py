@@ -6,7 +6,12 @@ from pypix.core.styles.qr_styler import QRCodeStyler, GradientMode
 from pypix.core.styles.marker_styles import MarkerStyle, MARKER_SVGS
 from pypix.core.styles.border_styles import BorderStyle, BORDER_SVGS
 from pypix.core.styles.line_styles import LineStyle, LINE_STYLES
-from pypix.core.utils.image_utils import svg_to_pil, add_center_image
+from pypix.core.styles.frame_styles import FrameStyler
+from pypix.core.utils.image_utils import (
+    svg_to_pil,
+    add_center_image,
+    apply_frame_qr
+)
 
 
 class Generator(qrcode.QRCode):
@@ -17,6 +22,7 @@ class Generator(qrcode.QRCode):
         self.box_size = None
         self.error_correction = None
         self.version = None
+        self.frame_style = None
         self.style_mode = None
 
     def create_custom_qr(
@@ -30,12 +36,14 @@ class Generator(qrcode.QRCode):
         line_style: LineStyle = LineStyle.ROUNDED,
         gradient_color: str = "blue",
         gradient_mode: GradientMode = GradientMode.GRADIENT,
-        style_mode: str = 'Normal'
+        frame_style: FrameStyler = None,
+        style_mode: str = 'Normal',
     ) -> Image.Image:
         self.version = 7
         self.error_correction = qrcode.constants.ERROR_CORRECT_H
         self.box_size = size
         self.border = border
+        self.frame_style = frame_style
         self.style_mode = style_mode
 
         self.add_data(data)
@@ -75,6 +83,13 @@ class Generator(qrcode.QRCode):
 
         if center_image:
             add_center_image(img, center_image)
+
+        if self.frame_style:
+            svg_str = self.frame_style
+            if not isinstance(self.frame_style, str):
+                svg_str = self.frame_style.svg()
+            frame_img = svg_to_pil(svg_str, size=500)
+            img = apply_frame_qr(frame_img, img)
 
         return img
 

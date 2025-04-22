@@ -12,6 +12,7 @@ def svg_to_pil(svg_string: str, size: int) -> Image.Image:
     img = Image.open(io.BytesIO(png_data))
     if img.mode != 'RGBA':
         img = img.convert('RGBA')
+
     return img
 
 
@@ -36,3 +37,18 @@ def add_center_image(img: Image.Image, center_image: str, radius: int = None) ->
     )
 
     img.paste(rounded_center, center_pos, rounded_center)
+
+
+def apply_frame_qr(frame_img: Image.Image, qr_img: Image.Image, scale: float = 0.7) -> Image.Image:
+    frame_img = frame_img.convert("RGBA")
+    qr_img = qr_img.convert("RGBA")
+
+    new_qr_size = int(frame_img.width * scale) + int(frame_img.height * scale) // 10
+    qr_img = qr_img.resize((new_qr_size, new_qr_size), Image.Resampling.LANCZOS)
+
+    x = (frame_img.width - new_qr_size) // 2
+    y = int(((frame_img.height - new_qr_size) // 2) - 30)
+
+    frame_img.paste(qr_img, (x, y), qr_img)
+
+    return frame_img
