@@ -20,7 +20,7 @@ from pypix.core.styles.qr_styler import GradientMode
 from pypix.core.styles.marker_styles import MarkerStyle
 from pypix.core.styles.border_styles import BorderStyle
 from pypix.core.styles.line_styles import LineStyle
-from pypix.core.styles.frame_styles import FrameStyler
+from pypix.core.styles.frame_styles import FrameStyle
 
 
 def normal_static():  # Testado e funcionando para Nubank, Inter, Caixa, Mercadopago
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         line_style=LineStyle.ROUNDED,
         gradient_color="green",
         gradient_mode=GradientMode.MULTI,
-        frame_style=FrameStyler.SCAN_ME_PURPLE,
+        frame_style=FrameStyle.SCAN_ME_PURPLE,
         style_mode="Full"  # Normal
     )
 

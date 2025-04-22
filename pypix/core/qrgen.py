@@ -6,7 +6,7 @@ from pypix.core.styles.qr_styler import QRCodeStyler, GradientMode
 from pypix.core.styles.marker_styles import MarkerStyle, MARKER_SVGS
 from pypix.core.styles.border_styles import BorderStyle, BORDER_SVGS
 from pypix.core.styles.line_styles import LineStyle, LINE_STYLES
-from pypix.core.styles.frame_styles import FrameStyler
+from pypix.core.styles.frame_styles import FrameStyle
 from pypix.core.utils.image_utils import (
     svg_to_pil,
     add_center_image,
@@ -36,7 +36,7 @@ class Generator(qrcode.QRCode):
         line_style: LineStyle = LineStyle.ROUNDED,
         gradient_color: str = "blue",
         gradient_mode: GradientMode = GradientMode.GRADIENT,
-        frame_style: FrameStyler = None,
+        frame_style: FrameStyle = None,
         style_mode: str = 'Normal',
     ) -> Image.Image:
         self.version = 7
