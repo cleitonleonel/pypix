@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pypix"
-version = "0.1.0"
+version = "1.0.4"
 description = "Biblioteca python para gerar br-code e qr-code do PIX."
 authors = ["cleiton <cleiton.leonel@gmail.com>"]
 license = "MIT"

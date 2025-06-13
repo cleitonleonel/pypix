@@ -6,7 +6,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="pypix",
-    version="1.0.3",
+    version="1.0.4",
     include_package_data=True,
     author="Cleiton Leonel Creton",
     author_email="cleiton.leonel@gmail.com",

@@ -1,59 +1,22 @@
-import re
-import base64
-from io import BytesIO
-from binascii import crc_hqx
-from unicodedata import normalize
-from pypix.core.qrgen import Generator
+import logging
+from pathlib import Path
+from typing import Optional, Union
+from pypix.core.qrgen import GeneratorQR
+from pypix.core.utils.validators import (
+    validate_cpf,
+    validate_phone
+)
+from pypix.core.services import (
+    base64_qrcode,
+    get_value,
+    formatted_text
+)
+from pypix.core.utils.pix_parser import crc_compute
 
-
-def validate_cpf(numbers):
-    cpf = [int(char) for char in numbers if char.isdigit()]
-    if len(cpf) != 11:
-        return False
-    if cpf == cpf[::-1]:
-        return False
-    for i in range(9, 11):
-        value = sum((cpf[num] * ((i + 1) - num) for num in range(0, i)))
-        digit = ((value * 10) % 11) % 10
-        if digit != cpf[i]:
-            return False
-    return True
-
-
-def validate_phone(value):
-    rule = re.compile(r'^\+?[1-9]\d{1,14}$')
-    return bool(rule.match(value))
-
-
-def get_value(identify, value):
-    return f"{identify}{str(len(value)).zfill(2)}{value}"
-
-
-def formatted_text(value):
-    return re.sub(
-        r'[^A-Za-z0-9$@%*+\-./:_ ]', '',
-        normalize('NFD', value).encode('ascii', 'ignore').decode('ascii')
-    )
-
-
-def crc_compute(hex_string):
-    msg = bytes(hex_string, 'utf-8')
-    crc = crc_hqx(msg, 0xffff)
-    return '{:04X}'.format(crc & 0xffff)
-
-
-def get_qrcode():
-    qr_generator = Generator()
-    return qr_generator
-
-
-def base64_qrcode(img):
-    img_buffer = BytesIO()
-    img.save(img_buffer, 'png')
-    res = img_buffer.getvalue()
-    img_buffer.close()
-    data_string = base64.b64encode(res).decode()
-    return f'data:image/png;base64,{data_string}'
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 
 class Pix:
@@ -68,7 +31,7 @@ class Pix:
         self.identification = None
         self.description = None
         self.default_url_pix = None
-        self.qr = None
+        self.qr = GeneratorQR()
 
     def set_default_url_pix(self, default_url_pix=None):
         self.default_url_pix = default_url_pix.replace('https://', '') if default_url_pix else None
@@ -156,26 +119,47 @@ class Pix:
 
     def save_qrcode(
             self,
-            output='./qrcode.png',
-            box_size=7,
-            border=1,
-            custom_logo=None,
+            data: Optional[str] = None,
+            output: str = "./qrcode.png",
+            box_size: int = 7,
+            border: int = 1,
+            custom_logo: Optional[str] = None,
             **kwargs
-    ):
+    ) -> Union[str, bool]:
+        output_path = Path(output)
+        is_gif_logo = custom_logo and custom_logo.endswith(".gif")
         try:
-            self.qr = get_qrcode()
+            frames, duration = [], 100
+
+            if not data:
+                data = self.get_br_code()
 
             qr_img = self.qr.create_custom_qr(
-                self.get_br_code(),
+                data=data,
                 size=box_size,
                 border=border,
-                center_image=custom_logo,
-                **kwargs
+                center_image=custom_logo if not is_gif_logo else None,
+                **kwargs,
             )
-            qr_img.save(output)
-            return base64_qrcode(qr_img)
+
+            if is_gif_logo:
+                output_path = output_path.with_suffix(".gif")
+                frames, duration = self.qr.add_center_animation(
+                    qr_img,
+                    custom_logo,
+                    gif_len_percent=0.85,
+                    radius=2
+                )
+
+            qrcode_str = base64_qrcode(
+                qr_img,
+                output_path,
+                frames=frames,
+                duration=duration
+            )
+            return qrcode_str
         except ValueError as e:
-            print(f"Error saving QR Code: {e}")
+            logger.error(f"Error saving QR Code: {e}")
             return False
 
     def qr_ascii(self):

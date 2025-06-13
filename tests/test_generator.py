@@ -1,5 +1,5 @@
 import pytest
-from pypix.core.qrgen import Generator
+from pypix.core.qrgen import GeneratorQR
 from pypix.core.styles.marker_styles import MarkerStyle
 from pypix.core.styles.border_styles import BorderStyle
 from pypix.core.styles.line_styles import LineStyle
@@ -9,7 +9,7 @@ from pypix.core.styles.qr_styler import QRCodeStyler, GradientMode
 @pytest.mark.parametrize("style_mode", [GradientMode.NORMAL, GradientMode.GRADIENT, GradientMode.MULTI])
 @pytest.mark.parametrize("color", ["red", "blue", "green", "#FF00FF"])
 def test_generate_qr_with_styles(style_mode, color):
-    generator = Generator()
+    generator = GeneratorQR()
     generator.style_mode = style_mode
 
     QRCodeStyler.mode = style_mode
