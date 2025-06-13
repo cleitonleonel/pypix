@@ -54,7 +54,7 @@ def dynamic():  # Não Testado
     pix.set_default_url_pix('meupsp.com.br/fatura/123456')
     pix.is_single_transaction(True)
 
-    print('\nBRCODE dinamic - PYPIX >>>>\n', pix.get_br_code())
+    print('\nBRCODE dynamic - PYPIX >>>>\n', pix.get_br_code())
 
 
 if __name__ == '__main__':
