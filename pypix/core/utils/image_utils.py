@@ -70,7 +70,8 @@ def add_center_gif(
         img: Image.Image,
         center_gif: str,
         gif_len_percent: 0.25,
-        radius: float = None
+        radius: float = None,
+        is_frame_style: bool = False
 ) -> tuple[list[Any], int]:
     """Add a rounded GIF to the center of the given image.
     Args:
@@ -78,16 +79,19 @@ def add_center_gif(
         center_gif (str): Path to the GIF file to be added.
         gif_len_percent (float): Percentage of the QR code size that the GIF should occupy.
         radius (float, optional): Radius for rounding the corners of the GIF. Defaults to None.
+        is_frame_style (bool): Whether the GIF is a frame style. Defaults to False.
     Returns:
         tuple: A tuple containing a list of frames and the duration of the GIF.
 
     """
     original_gif = Image.open(center_gif)
-    center_size = min(img.width, img.height) // 3
-    new_gif_len = int(center_size * gif_len_percent)
+    center_size_img = min(img.width, img.height) // 2
+    new_gif_len = int(center_size_img * gif_len_percent)
     gif_size = (new_gif_len, new_gif_len)
     pos_x = (img.width - gif_size[0]) // 2
     pos_y = (img.height - gif_size[1]) // 2
+    if is_frame_style:
+        pos_y = int(pos_y - int(gif_len_percent * 50))  # Adjust position for frame style
     paste_position = (pos_x, pos_y)
 
     if radius is None:

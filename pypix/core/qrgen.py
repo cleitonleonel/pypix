@@ -145,8 +145,8 @@ class GeneratorQR(qrcode.QRCode):
 
         return img
 
-    @staticmethod
     def add_center_animation(
+            self,
             img: Image.Image,
             center_gif: str,
             gif_len_percent: 0.25,
@@ -166,11 +166,13 @@ class GeneratorQR(qrcode.QRCode):
         Returns:
             tuple: A tuple containing the list of frames and the duration of the GIF.
         """
+        is_frame_style = isinstance(self.frame_style, FrameStyle)
         frames, duration = add_center_gif(
             img,
             center_gif,
             gif_len_percent,
-            radius
+            radius,
+            is_frame_style
         )
         return frames, duration
 

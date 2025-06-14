@@ -147,7 +147,7 @@ class Pix:
                 frames, duration = self.qr.add_center_animation(
                     qr_img,
                     custom_logo,
-                    gif_len_percent=0.85,
+                    gif_len_percent=0.5,
                     radius=2
                 )
 
