@@ -1,17 +1,23 @@
-[tool.poetry]
+[project]
 name = "pypix"
 version = "1.0.4"
 description = "Biblioteca python para gerar br-code e qr-code do PIX."
-authors = ["cleiton <cleiton.leonel@gmail.com>"]
-license = "MIT"
+authors = [
+    { name = "cleiton", email = "cleiton.leonel@gmail.com"}
+]
+license = { text = "MIT" }
 readme = "README.md"
+requires-python = ">=3.12,<4.0"
 
-[tool.poetry.dependencies]
-python = "^3.12"
-qrcode = "^7.4.2"
-cairosvg = "^2.7.1"
+dependencies = [
+    "qrcode (>=7.4.2,<8.0.0)",
+    "cairosvg (>=2.7.1,<3.0.0)",
+]
 
+packages = [
+    { include = "pypix" }
+]
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
